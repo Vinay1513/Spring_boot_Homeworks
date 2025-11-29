@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 public class Week1HomeworkApplication {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Week1HomeworkApplication.class, args);
-        CakeBaker baker = context.getBean(CakeBaker.class);
-        baker.bakeCake();
+//        CakeBaker baker = context.getBean(CakeBaker.class);
+//        baker.bakeCake();
     }
 }
