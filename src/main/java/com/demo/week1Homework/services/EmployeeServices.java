@@ -2,14 +2,17 @@ package com.demo.week1Homework.services;
 
 import com.demo.week1Homework.dto.EmployeeDTO;
 import com.demo.week1Homework.entities.EmployeeEntity;
+import com.demo.week1Homework.exceptions.ResourseNotFoundException;
 import com.demo.week1Homework.repositoris.EmployeeRepository;
-import org.apache.el.util.ReflectionUtil;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,13 +27,13 @@ public class EmployeeServices {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeDTO getEmployeeById(long id) {
-        EmployeeEntity employeeEntity =  employeeRepository.findById(id).orElse(null);
+    public Optional<EmployeeDTO> getEmployeeById(long id) {
+        return employeeRepository.findById(id)
+                .map(entity -> modelMapper.map(entity, EmployeeDTO.class));
+    }
 
-        return modelMapper.map(employeeEntity, EmployeeDTO.class);
-   }
 
-public  List<EmployeeDTO> getAllEmployees() {
+    public  List<EmployeeDTO> getAllEmployees() {
     List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
  return   employeeEntities.stream().map(employeeEntity -> modelMapper.map(employeeEntity, EmployeeDTO.class)).collect(Collectors.toList());
 }
@@ -42,11 +45,17 @@ public EmployeeDTO createNewEmployee(EmployeeDTO inputEmployee) {
 }
 
 public EmployeeDTO updateEmployeeById(Long employeeId,EmployeeDTO inputEmployee) {
+        isExistingEmployeeId(employeeId);
         EmployeeEntity employeeEntity = modelMapper.map(inputEmployee, EmployeeEntity.class);
         employeeEntity.setId(employeeId);
         EmployeeEntity updatedEmployee = employeeRepository.save(employeeEntity);
         return modelMapper.map(updatedEmployee, EmployeeDTO.class);
 }
+public  boolean isExistingEmployeeId(Long employeeId) {
+    boolean exists = employeeRepository.existsById(employeeId);
+    if (!exists) throw new ResourseNotFoundException("Employee not found" + employeeId);
+return true;
+    }
 
 public boolean deleteEmployeeById(Long employeeId) {
 boolean exists = employeeRepository.existsById(employeeId);

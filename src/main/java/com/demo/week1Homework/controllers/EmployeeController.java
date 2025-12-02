@@ -1,12 +1,18 @@
 package com.demo.week1Homework.controllers;
 
 import com.demo.week1Homework.dto.EmployeeDTO;
+import com.demo.week1Homework.exceptions.ResourseNotFoundException;
 import com.demo.week1Homework.services.EmployeeServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employee")   // ✔ Added this so POST /employee & GET /employee works
@@ -30,9 +36,14 @@ public class EmployeeController {
 //}
 
     @GetMapping(path = "/{employeeId}")
-    public EmployeeDTO getEmployeeById(@PathVariable(name = "employeeId") Long employeeId) {
-        return employeeService.getEmployeeById(employeeId);
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name = "employeeId") Long employeeId) {
+        Optional<EmployeeDTO>employeeDTO = employeeService.getEmployeeById(employeeId);
+        return employeeDTO.map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1)).orElseThrow(() -> new ResourseNotFoundException("Employee Not found with this ID" +employeeId));
+
+
     }
+
+
 
     @GetMapping
     public List<EmployeeDTO> getAllEmployees(
@@ -48,7 +59,7 @@ public class EmployeeController {
 //    }
 
     @PostMapping
-    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee) {
+    public EmployeeDTO createNewEmployee(@RequestBody @Valid EmployeeDTO inputEmployee) {
         return employeeService.createNewEmployee(inputEmployee);
     }
 
@@ -58,6 +69,9 @@ public class EmployeeController {
             @PathVariable Long employeeId) {
         return employeeService.updateEmployeeById(employeeId, inputEmployee);
     }
+
+
+
 
     @DeleteMapping(path = "/{employeeId}")
     public boolean deleteEmployeeById(@PathVariable Long employeeId) {
