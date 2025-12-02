@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity                      // ✅ REQUIRED
+@Entity
 @Table(name = "employee")    // OK
 public class EmployeeEntity {
 
