@@ -1,4 +1,4 @@
-package com.demo.springbootCourse;
+package com.demo.week1springboot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

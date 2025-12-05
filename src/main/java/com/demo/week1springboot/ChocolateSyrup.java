@@ -1,4 +1,4 @@
-package com.demo.springbootCourse;
+package com.demo.week1springboot;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
