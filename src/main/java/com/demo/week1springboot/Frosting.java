@@ -1,4 +1,4 @@
-package com.demo.week1Homework;
+package com.demo.springbootCourse;
 
 public interface Frosting {
     String getFrostingType();

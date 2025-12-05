@@ -1,4 +1,4 @@
-package com.demo.week1Homework;
+package com.demo.springbootCourse;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

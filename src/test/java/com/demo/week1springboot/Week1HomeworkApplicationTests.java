@@ -1,4 +1,4 @@
-package com.demo.week1Homework;
+package com.demo.springbootCourse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
